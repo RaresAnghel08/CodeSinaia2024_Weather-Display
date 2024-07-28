@@ -1,4 +1,4 @@
-import "../styles/components/TimeData.css";
+import "../styles/components/styles.css";
 
 export function TimeData({time}) {
   return (

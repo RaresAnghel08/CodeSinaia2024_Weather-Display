@@ -1,4 +1,4 @@
-import "../styles/components/MainData.css";
+import "../styles/components/styles.css";
 
 export function MainData({temperature,apparentTemperature}) {
   return (

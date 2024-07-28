@@ -1,4 +1,4 @@
-import "../styles/components/Forecast.css";
+import "../styles/components/styles.css";
 import { ForecastItem } from "./ForecastItem";
 
 export function Forecast({ forecast = [] }) {

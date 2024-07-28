@@ -1,4 +1,4 @@
-import "../styles/components/ForecastItem.css";
+import "../styles/components/styles.css";
 
 export function ForecastItem({ item }) {
     const temperatureClass = item.temperature < 14 ? "cold-temperature" : "normal-temperature";

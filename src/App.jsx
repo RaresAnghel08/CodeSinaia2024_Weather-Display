@@ -1,14 +1,8 @@
-import { WeatherIcon } from "./components/WeatherIcon";
-import { FeaturedData } from "./components/FeaturedData";
-import { MainData } from "./components/MainData";
-
 import "./App.css";
-import { TimeData } from "./components/TimeData";
 import { fetchData } from "./utilities/fetchData";
-
 import { useState, useEffect } from "react";
-import { Forecast } from "./components/Forecast";
 import { destructureDate } from "./utilities/time_data";
+import * as Components from "./components/components.jsx";
 
 function App() {
   const [data, setData] = useState();
@@ -30,7 +24,7 @@ function App() {
           })
           .catch((error) => console.error(error));
       }
-    });
+    }, 1000);
     fetchData()
       .then((res) => {
         setData({ ...res, time: destructureDate(new Date()) });
@@ -40,29 +34,31 @@ function App() {
     return () => clearInterval(timerID);
   }, []);
 
-  if (!data) return;
+  if (!data) return null;
 
   return (
     <div className="app">
       <div className="featured-data">
-        <FeaturedData city="Sinaia"/>
+        <Components.FeaturedData city="Sinaia" />
       </div>
 
       <div className="temperature-display">
-        <WeatherIcon 
-        wi={data.weatherCode?.image} 
-        wd={data.weatherCode?.description}
+        <Components.WeatherIcon
+          wi={data.weatherCode?.image}
+          wd={data.weatherCode?.description}
         />
       </div>
       <div className="main-data">
-        <MainData temperature={data.temperature} apparentTemperature={data.apparentTemperature}/>
+        <Components.MainData
+          temperature={data.temperature}
+          apparentTemperature={data.apparentTemperature}
+        />
       </div>
       <div className="time-data">
-        <TimeData 
-        time={data.time}/>
+        <Components.TimeData time={data.time} />
       </div>
       <div className="forecast">
-        <Forecast forecast={data.hourlyData} />
+        <Components.Forecast forecast={data.hourlyData} />
       </div>
     </div>
   );

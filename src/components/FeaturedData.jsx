@@ -1,4 +1,4 @@
-import "../styles/components/FeaturedData.css";
+import "../styles/components/styles.css";
 
 export function FeaturedData({city = "Bucuresti"}) {
   return (

@@ -1,4 +1,4 @@
-import "../styles/components/WeatherIcon.css";
+import "../styles/components/styles.css";
 
 export function WeatherIcon({wi,wd}) {
   return (

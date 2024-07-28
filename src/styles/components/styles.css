@@ -1,0 +1,114 @@
+.featured-data {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+  
+  .city {
+    grid-column: 2;
+    font-size: 3em;
+  }
+  .forecast {
+    background-color: var(--primary);
+    border-radius: 20px;
+    color: var(--background);
+  
+    .title {
+      text-align: center;
+    }
+  
+    .forecast-list {
+      display: flex;
+      gap: 2vw;
+      overflow: hidden;
+      overflow-x: scroll;
+      padding-inline: 2vw;
+    }
+  }
+  .forecast-item {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  .cold-temperature {
+    color: red;
+  }
+  .main-data {
+    background-color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    color: var(--background);
+  
+    width: 100%;
+    height: 100%;
+  }
+  
+  .data {
+    display: flex;
+    flex-flow: column;
+    flex: auto;
+    justify-content: center;
+    text-align: center;
+  }
+  .time-data {
+    background-color: var(--primary);
+    border-radius: 10px;
+    color: var(--background);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  
+    .sections {
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+    }
+  }
+  .weather-icon-container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+  
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    backdrop-filter: blur(0px) saturate(10%);
+    background-color: var(--primary);
+    border: 1px solid rgba(209, 213, 219, 0.18);
+    border-radius: 10px;
+  
+    .weather-icon {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .weather-icon-description {
+      color: var(--background);
+      font-size: 2em;
+    }
+  }
+  
+  .alt-background {
+    background-color: var(--background-alt);
+  
+    .weather-icon-description {
+      color: var(--text);
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .weather-icon-container {
+      flex-flow: column;
+      align-items: center;
+  
+      .weather-icon-description {
+        font-size: 1em;
+      }
+    }
+  }
+  
