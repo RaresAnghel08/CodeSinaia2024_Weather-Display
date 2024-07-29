@@ -11,6 +11,8 @@
     background-color: var(--primary);
     border-radius: 20px;
     color: var(--background);
+    width: 100%;
+    overflow: hidden;
   
     .title {
       text-align: center;
@@ -22,6 +24,7 @@
       overflow: hidden;
       overflow-x: scroll;
       padding-inline: 2vw;
+      flex-wrap: wrap;
     }
   }
   .forecast-item {

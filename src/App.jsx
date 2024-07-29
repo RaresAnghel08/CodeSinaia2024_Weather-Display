@@ -1,45 +1,84 @@
-import "./App.css";
-import { fetchData } from "./utilities/fetchData";
-import { useState, useEffect } from "react";
-import { destructureDate } from "./utilities/time_data";
-import * as Components from "./components/components.jsx";
+// App.jsx
+import React, { useState, useEffect } from 'react';
+import { fetchData } from './utilities/fetchData.js';
+import * as Components from './components/components.jsx';
+import { destructureDate } from './utilities/time_data.js';
+import Loader from './Loader.jsx'; // Importă componenta Loader
+import './App.css'; // Asigură-te că importi stilurile
 
 function App() {
   const [data, setData] = useState();
+  const [city, setCity] = useState("Bucuresti"); // Default city
+  const [loading, setLoading] = useState(true);
+  const [currentTime, setCurrentTime] = useState(destructureDate(new Date()));
 
-  function updateDate(date) {
-    setData((previousData) => ({ ...previousData, time: date }));
-  }
+  // Function to get the city name from coordinates (mock implementation)
+  const fetchCityFromCoordinates = async (lat, lon) => {
+    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+    const data = await response.json();
+    return data.city || "Unknown City";
+  };
 
   useEffect(() => {
-    let timerID = setInterval(() => {
-      const date = destructureDate(new Date());
+    // Fetch data immediately on component mount
+    const fetchInitialData = async () => {
+      try {
+        const date = new Date();
+        setCurrentTime(destructureDate(date));
 
-      updateDate(date);
+        const data = await fetchData();
+        setData(data);
 
-      if (date.minute % 30 === 0 && parseInt(date.second, 10) === 0) {
+        // Get user's location
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            const city = await fetchCityFromCoordinates(latitude, longitude);
+            setCity(city);
+            setLoading(false);
+          },
+          (error) => {
+            console.error("Error fetching location:", error);
+            setLoading(false); // Handle error appropriately
+          }
+        );
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchInitialData(); // Fetch data immediately
+
+    // Function to update time and data
+    const updateTimeAndData = () => {
+      const date = new Date();
+      setCurrentTime(destructureDate(date));
+
+      // Fetch data every minute
+      if (date.getSeconds() === 0) {
         fetchData()
           .then((res) => {
             setData(res);
           })
           .catch((error) => console.error(error));
       }
-    }, 1000);
-    fetchData()
-      .then((res) => {
-        setData({ ...res, time: destructureDate(new Date()) });
-      })
-      .catch((error) => console.error(error));
+    };
+
+    // Set an interval to update data every second
+    const timerID = setInterval(updateTimeAndData, 1000);
 
     return () => clearInterval(timerID);
   }, []);
 
-  if (!data) return null;
+  if (loading) return <Loader />; // Show loader while loading
+
+  if (!data) return null; // Ensure the component returns null when there is no data
 
   return (
     <div className="app">
       <div className="featured-data">
-        <Components.FeaturedData city="Sinaia" />
+        <Components.FeaturedData city={city} />
       </div>
 
       <div className="temperature-display">
@@ -55,7 +94,7 @@ function App() {
         />
       </div>
       <div className="time-data">
-        <Components.TimeData time={data.time} />
+        <Components.TimeData time={currentTime} />
       </div>
       <div className="forecast">
         <Components.Forecast forecast={data.hourlyData} />

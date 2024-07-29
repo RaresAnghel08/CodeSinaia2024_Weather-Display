@@ -6,12 +6,7 @@ export async function fetchData() {
   const params = {
     latitude: 45.474998,
     longitude: 25.251944,
-    current: [
-      "temperature_2m",
-      "apparent_temperature",
-      "is_day",
-      "weather_code",
-    ],
+    current: ["temperature_2m", "apparent_temperature", "is_day", "weather_code"],
     hourly: ["temperature_2m", "apparent_temperature", "weather_code"],
     forecast_days: 1,
   };
@@ -29,11 +24,9 @@ export async function fetchData() {
     Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
 
   const hourly_data = {
-    time: range(
-      Number(hourly.time()),
-      Number(hourly.timeEnd()),
-      hourly.interval(),
-    ).map((t) => new Date((t + utcOffsetSeconds) * 1000)),
+    time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
+      (t) => new Date((t + utcOffsetSeconds) * 1000)
+    ),
     temperature: hourly.variables(0).valuesArray(),
     apparentTemperature: hourly.variables(1).valuesArray(),
     weatherCode: hourly.variables(2).valuesArray(),
@@ -46,10 +39,7 @@ export async function fetchData() {
       time: destructureDate(hourly_data.time[i]),
       temperature: Math.floor(hourly_data.temperature[i]),
       apparentTemperature: Math.floor(hourly_data.apparentTemperature[i]),
-      weatherCode: getWeatherCodeData(
-        hourly_data.weatherCode[i],
-        isNight(hourly_data.time[i]),
-      ),
+      weatherCode: getWeatherCodeData(hourly_data.weatherCode[i], isNight(hourly_data.time[i])),
     });
   }
 
@@ -57,10 +47,7 @@ export async function fetchData() {
     temperature: Math.floor(current.variables(0).value()),
     apparentTemperature: Math.floor(current.variables(1).value()),
     isNight: !current.variables(2).value(),
-    weatherCode: getWeatherCodeData(
-      current.variables(3).value(),
-      !current.variables(2).value(),
-    ),
+    weatherCode: getWeatherCodeData(current.variables(3).value(), !current.variables(2).value()),
     hourlyData: hours_data,
   };
 

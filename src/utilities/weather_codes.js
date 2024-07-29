@@ -8,9 +8,7 @@ export function getWeatherCodeData(weather_code, isNight) {
       description: `Weather code ${weather_code} was not found`,
     };
 
-  let weather_obj = isNight
-    ? weather_codes[weather_code]["night"]
-    : weather_codes[weather_code]["day"];
+  let weather_obj = isNight ? weather_codes[weather_code]["night"] : weather_codes[weather_code]["day"];
 
   weather_obj["code"] = weather_code;
 
