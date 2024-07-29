@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { fetchData } from './utilities/fetchData.js';
 import * as Components from './components/components.jsx';
 import { destructureDate } from './utilities/time_data.js';
-import Loader from './Loader.jsx'; // Importă componenta Loader
-import './App.css'; // Asigură-te că importi stilurile
+import Loader from './Loader.jsx';
+import './App.css';
 
 function App() {
   const [data, setData] = useState();
@@ -48,17 +48,13 @@ function App() {
         setLoading(false);
       }
     };
-
     fetchInitialData(); // Fetch data immediately
-
     // Set an interval to update data every second
     const timerID = setInterval(updateTimeAndData, 1000);
-
     // Hide loader after 2 seconds
     const loaderTimeout = setTimeout(() => {
       setLoaderVisible(false);
     }, 2000);
-
     return () => {
       clearInterval(timerID);
       clearTimeout(loaderTimeout);

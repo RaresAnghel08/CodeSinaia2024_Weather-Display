@@ -1,6 +1,5 @@
-// Loader.jsx
 import React from 'react';
-import './App.css'; // Asigură-te că importi stilurile pentru loader
+import './App.css';
 
 const Loader = () => {
     return (
