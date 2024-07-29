@@ -11,6 +11,7 @@ function App() {
   const [city, setCity] = useState("Bucuresti"); // Default city
   const [loading, setLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(destructureDate(new Date()));
+  const [loaderVisible, setLoaderVisible] = useState(true);
 
   // Function to get the city name from coordinates (mock implementation)
   const fetchCityFromCoordinates = async (lat, lon) => {
@@ -20,7 +21,7 @@ function App() {
   };
 
   useEffect(() => {
-    // Fetch data immediately on component mount
+    // Function to handle data fetching and city location
     const fetchInitialData = async () => {
       try {
         const date = new Date();
@@ -50,28 +51,36 @@ function App() {
 
     fetchInitialData(); // Fetch data immediately
 
-    // Function to update time and data
-    const updateTimeAndData = () => {
-      const date = new Date();
-      setCurrentTime(destructureDate(date));
-
-      // Fetch data every minute
-      if (date.getSeconds() === 0) {
-        fetchData()
-          .then((res) => {
-            setData(res);
-          })
-          .catch((error) => console.error(error));
-      }
-    };
-
     // Set an interval to update data every second
     const timerID = setInterval(updateTimeAndData, 1000);
 
-    return () => clearInterval(timerID);
+    // Hide loader after 2 seconds
+    const loaderTimeout = setTimeout(() => {
+      setLoaderVisible(false);
+    }, 2000);
+
+    return () => {
+      clearInterval(timerID);
+      clearTimeout(loaderTimeout);
+    };
   }, []);
 
-  if (loading) return <Loader />; // Show loader while loading
+  // Function to update time and data
+  const updateTimeAndData = () => {
+    const date = new Date();
+    setCurrentTime(destructureDate(date));
+
+    // Fetch data every minute
+    if (date.getSeconds() === 0) {
+      fetchData()
+        .then((res) => {
+          setData(res);
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  if (loaderVisible) return <Loader />; // Show loader while loading
 
   if (!data) return null; // Ensure the component returns null when there is no data
 

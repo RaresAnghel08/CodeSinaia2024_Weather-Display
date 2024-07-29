@@ -11,6 +11,5 @@ export function destructureDate(date) {
 
 export function isNight(date) {
   const date_dest = destructureDate(date);
-
   return parseInt(date_dest.hour, 10) > 20 || parseInt(date_dest.hour, 10) < 6;
 }
