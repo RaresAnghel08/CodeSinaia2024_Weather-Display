@@ -54,7 +54,7 @@ function App() {
     // Hide loader after 2 seconds
     const loaderTimeout = setTimeout(() => {
       setLoaderVisible(false);
-    }, 2000);
+    }, 10000);
     return () => {
       clearInterval(timerID);
       clearTimeout(loaderTimeout);
